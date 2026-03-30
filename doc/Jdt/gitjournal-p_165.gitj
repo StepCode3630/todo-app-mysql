@@ -4,5 +4,16 @@
   "branch": "main",
   "me": "StepCode3630",
   "journalStartDate": null,
-  "exceptions": []
+  "exceptions": [
+    {
+      "id": "99e067fb-710b-4058-86eb-31a7f61d2e30",
+      "type": "commitless",
+      "name": "chore: analyse de code",
+      "description": "",
+      "date": "2026-03-30T09:24:00.000Z",
+      "duration": 45,
+      "status": "DONE",
+      "author": "StepCode3630"
+    }
+  ]
 }
