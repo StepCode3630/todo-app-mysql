@@ -9,9 +9,9 @@
       "id": "99e067fb-710b-4058-86eb-31a7f61d2e30",
       "type": "commitless",
       "name": "chore: analyse de code",
-      "description": "",
-      "date": "2026-03-30T09:24:00.000Z",
-      "duration": 45,
+      "description": "Analyse du code de base et voir déjà comment migrer à la db MongoDb",
+      "date": "2026-03-30T11:24",
+      "duration": 135,
       "status": "DONE",
       "author": "StepCode3630"
     },
@@ -24,6 +24,32 @@
       "duration": 50,
       "status": "DONE",
       "author": "StepCode3630"
+    },
+    {
+      "id": "949537be-72e5-4dd6-be8f-1ced51826a3f",
+      "type": "commitpatch",
+      "sha": "2c9fd0c7596185eb7a0a6025b9bdac7eeb38ba18",
+      "url": "https://github.com/StepCode3630/todo-app-mysql/commit/2c9fd0c7596185eb7a0a6025b9bdac7eeb38ba18",
+      "name": "feat: model",
+      "description": "",
+      "date": "2026-04-20T09:25:00.000Z",
+      "duration": 10,
+      "status": "DONE",
+      "author": "StepCode3630",
+      "patch": true
+    },
+    {
+      "id": "e5659c2b-335a-4fbb-80be-65e5929a8c7a",
+      "type": "commitpatch",
+      "sha": "87dd727e95aa210ff19367e5ef37c23115f3283c",
+      "url": "https://github.com/StepCode3630/todo-app-mysql/commit/87dd727e95aa210ff19367e5ef37c23115f3283c",
+      "name": "feat: backend",
+      "description": "",
+      "date": "2026-04-20T09:26:00.000Z",
+      "duration": 60,
+      "status": "Done",
+      "author": "StepCode3630",
+      "patch": true
     }
   ]
 }
