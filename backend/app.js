@@ -3,6 +3,9 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 
+//Affichage des routes
+const listEndpoints = require('express-list-endpoints');
+
 // Chargement des variables .env en premier — avant toute autre instruction
 require('dotenv').config();
 
@@ -30,6 +33,8 @@ function createApp() {
 
   // API routes
   app.use(router);
+
+  console.log(listEndpoints(app));
 
   // TEST-ONLY helper: reset DB between specs
   // if (process.env.NODE_ENV === 'test') {
