@@ -14,12 +14,11 @@ const userSchema = new mongoose.Schema(
       required: true
     },
     name: String,
-    address: {
-      type: String
-    },
+    address: String,
     zip: String,
     location: String
   },
   { timestamps: true }
 );
+
 module.exports = mongoose.model('User', userSchema);
