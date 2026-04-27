@@ -6,14 +6,10 @@ const cookieParser = require('cookie-parser');
 // Chargement des variables .env en premier — avant toute autre instruction
 require('dotenv').config();
 
-// Load env vars
-process.loadEnvFile('./.env');
-
 const { connectToDatabase } = require('./config/database');
 
 const { User, Todo } = require('./models');
 const router = require('./routes');
-const { default: mongoose } = require('mongoose');
 
 const PORT = process.env.PORT || '3000';
 const ENV = process.env.NODE_ENV || 'development';
@@ -25,15 +21,6 @@ function createApp() {
   if (app) return app;
 
   app = express();
-
-  mongoose
-    .connect(process.env.DB_URL || 'mongodb://localhost:27017/todoapp')
-    .then(() => {
-      console.log('Connected to MongoDB');
-    })
-    .catch((error) => {
-      console.error('Error connecting to MongoDB:', error);
-    });
 
   // Serve frontend static files (useful in dev/prod, skipped in tests if you want)
   app.use(express.static(path.join(__dirname, '../dist')));
