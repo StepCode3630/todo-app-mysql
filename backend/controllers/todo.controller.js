@@ -22,10 +22,9 @@ const TodoController = {
     const user_id = req.sub;
     const { Todo } = req.app.locals.models;
 
-    await Todo.findAll({
-      where: { user_id: user_id },
-      order: [['date', 'ASC']],
-      attributes: { exclude: ['user_id'] }
+    await Todo.find({ user_id })
+  .sort({ date: 1 })
+  .select('-user_id')
     })
       .then((result) => {
         if (result) {
