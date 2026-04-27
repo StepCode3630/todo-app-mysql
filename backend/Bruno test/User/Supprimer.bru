@@ -1,0 +1,30 @@
+meta {
+  name: Supprimer
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{baseUrl}}/api/user?_id=69ef0a867ff2040627f6dee5
+  body: json
+  auth: bearer
+}
+
+params:query {
+  _id: 69ef0a867ff2040627f6dee5
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "email": "test12@test1211111.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

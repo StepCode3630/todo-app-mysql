@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Bruno test todo app list",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

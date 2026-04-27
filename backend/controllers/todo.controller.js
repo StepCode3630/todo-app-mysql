@@ -1,5 +1,3 @@
-const { Sequelize } = require('sequelize');
-
 const TodoController = {
   createTodo: async (req, res) => {
     const user_id = req.sub;
@@ -17,7 +15,7 @@ const TodoController = {
       })
       .catch((error) => {
         console.error('ADD TODO: ', error);
-        return res.status(500);
+        return res.status(500).json({ message: "Erreur lors de l'ajout de la tâche !" });
       });
   },
   getAllTodo: async (req, res) => {

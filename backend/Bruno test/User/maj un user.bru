@@ -1,0 +1,31 @@
+meta {
+  name: maj un user
+  type: http
+  seq: 2
+}
+
+patch {
+  url: {{baseUrl}}/api/user?_id=69ef2006487683c37d5110e4
+  body: json
+  auth: bearer
+}
+
+params:query {
+  _id: 69ef2006487683c37d5110e4
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "email": "test11@test11v2.com",
+    "password": "123456"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
