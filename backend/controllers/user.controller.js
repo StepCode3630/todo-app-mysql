@@ -1,9 +1,9 @@
 const bcrypt = require('bcrypt');
 
 const cleanUser = (user) => {
-  // eslint-disable-next-line no-unused-vars
-  const { password, ...cleanedUser } = user.get({ plain: true });
-  return cleanedUser;
+  const obj = user.toObject();
+  delete obj.password;
+  return obj;
 };
 
 const UserController = {
@@ -27,64 +27,43 @@ const UserController = {
       });
   },
   getUser: async (req, res) => {
-    const user_id = req.sub;
     const { User } = req.app.locals.models;
 
-    await User.findOne({
-      where: { id: user_id },
-      attributes: { exclude: ['id', 'password'] }
-    })
-      .then((result) => {
-        if (result) {
-          return res.status(200).json({ user: result });
-        } else {
-          return res.status(404);
-        }
-      })
-      .catch((error) => {
-        console.error('GET USER: ', error);
-        return res.status(500);
-      });
-  },
-  editUser: async (req, res) => {
-    const user_id = req.sub;
-    const query = { id: user_id };
-    const data = req.body;
-    const { User } = req.app.locals.models;
-
-    const user = await User.findOne({ where: query });
+    const user = await User.findById(req.sub).select('-password');
     if (user) {
-      user.name = data.name ? data.name : null;
-      user.address = data.address ? data.address : null;
-      user.zip = data.zip ? data.zip : null;
-      user.location = data.location ? data.location : null;
-      await user
-        .save()
-        .then((result) => {
-          return res.status(200).json({ user: cleanUser(result) });
-        })
-        .catch((error) => {
-          console.error('UPDATE USER: ', error);
-          return res.status(500);
-        });
+      console.log('GET USER: ', user);
+      return res.status(200).json({ user: cleanUser(user) });
     } else {
-      return res.status(404);
+      return res.status(404).json({ message: 'User not found' });
     }
   },
-  deleteCurrentUser: (req, res) => {
-    const user_id = req.sub;
-    const query = { id: user_id };
+  editUser: async (req, res) => {
+    const { User } = req.app.locals.models;
+    const user = await User.findById(req.sub);
+
+    if (!user) return res.status(404).json({ message: 'Not found' });
+
+    user.name = req.body.name || user.name;
+    user.address = req.body.address || user.address;
+    user.zip = req.body.zip || user.zip;
+    user.location = req.body.location || user.location;
+
+    await user.save();
+
+    console.log('EDIT USER: ', user);
+    return res.status(200).json({ user: cleanUser(user) });
+  },
+  deleteCurrentUser: async (req, res) => {
     const { User } = req.app.locals.models;
 
-    User.destroy({
-      where: query
-    })
+    await User.findByIdAndDelete(req.sub)
       .then(() => {
-        return res.status(200).json({ id: user_id });
+        console.log('DELETE USER: ', req.sub);
+        res.clearCookie('token').status(204).send();
       })
       .catch((error) => {
         console.error('DELETE USER: ', error);
-        return res.status(500);
+        return res.status(500).json({ message: 'Erreur lors de la suppression du compte !' });
       });
   }
 };
