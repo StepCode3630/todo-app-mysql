@@ -63,7 +63,10 @@ async function initApp(options = {}) {
   await connectToDatabase();
 
   // Initialize all models & expose to controllers
-  theApp.locals.models = { User, Todo };
+  theApp.locals.models = {
+    User,
+    Todo
+  };
 
   if (listen) {
     server = theApp.listen(port, () => {

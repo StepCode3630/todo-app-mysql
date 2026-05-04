@@ -105,13 +105,13 @@ const clearSearchTodo = async () => {
         </form>
       </div>
       <template v-if="loading">
-        <AppSpinner class="w-8 h-8"/>
+        <AppSpinner class="w-8 h-8" />
       </template>
       <template v-else>
         <ul role="list" class="mt-2 flex flex-col list-none">
-          <li v-for="todo in allTodo" :key="todo.id">
+          <li v-for="todo in allTodo" :key="todo._id">
             <TodoItem
-              :todoId="Number(todo.id)"
+              :todoId="String(todo._id ?? '')"
               :todoDate="todo.date.toString()"
               :todoCompleted="todo.completed"
               :todoText="todo.text"

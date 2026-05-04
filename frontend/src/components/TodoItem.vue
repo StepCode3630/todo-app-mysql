@@ -17,7 +17,7 @@ const props = defineProps({
     required: true
   },
   todoId: {
-    type: Number,
+    type: String,
     required: true
   },
   todoCompleted: {
@@ -33,6 +33,7 @@ const toggleTodoCompleted = async (id: any, completed: boolean) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const deleteTodoItem = async (id: any) => {
+  console.log('DELETE ID:', id);
   await todoStore.deleteTodo(id);
 };
 

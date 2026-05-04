@@ -49,10 +49,10 @@ export const useTodo = defineStore('todo', {
         if (this.allTodo) {
           // mets à jour le todo dans le tableau
           this.allTodo = this.allTodo.map((todo) =>
-            todo.id === todoResponse.id
+            todo._id === todoResponse.id
               ? {
                   ...todo,
-                  id: todoResponse.id,
+                  _id: todoResponse.id,
                   date: new Date(todoResponse.date),
                   text: todoResponse.text,
                   completed: todoResponse.completed
@@ -79,7 +79,7 @@ export const useTodo = defineStore('todo', {
     async fetchSearchTodo(query: string) {
       this.loading = true;
       this.allTodo = await fetchSearchTodo(query);
-      if(!this.allTodo) {
+      if (!this.allTodo) {
         this.allTodo = [];
       }
       this.loading = false;
