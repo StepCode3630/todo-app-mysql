@@ -50,6 +50,16 @@
       "status": "Done",
       "author": "StepCode3630",
       "patch": true
+    },
+    {
+      "id": "6a30b5c4-d51c-4d91-967d-14f7e99ec274",
+      "type": "commitless",
+      "name": "doc: écriture du readme",
+      "description": "",
+      "date": "2026-05-04T11:22",
+      "duration": 25,
+      "status": "DONE",
+      "author": "StepCode3630"
     }
   ]
 }
