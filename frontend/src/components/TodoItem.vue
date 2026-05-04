@@ -28,9 +28,9 @@ const props = defineProps({
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const toggleTodoCompleted = async (id: any, completed: boolean) => {
-  await todoStore.updateTodo(id, { completed: completed });
   console.log('TOGGLE ID:', id, 'COMPLETED:', completed);
   console.log('CLICK EVENT FIRED');
+  await todoStore.updateTodo(id, { completed: completed });
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -77,7 +77,6 @@ const todoCompletedLocal = computed({
       <div class="flex flex-1 align-middle justify-end">
         <Toggle
           v-model="todoCompletedLocal"
-          @watch="toggleTodoCompleted(todoId, todoCompletedLocal)"
           :classes="{
             container:
               'inline-block w-[70px] rounded-full outline-none focus:ring-2 focus:ring-slate-400 focus:ring-opacity-30',

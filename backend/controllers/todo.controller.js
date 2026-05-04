@@ -1,5 +1,15 @@
 const mongoose = require('mongoose');
 
+const cleanTodo = (todo) => {
+  const obj = todo.toObject();
+  return {
+    id: obj._id.toString(),
+    text: obj.text,
+    date: obj.date,
+    completed: obj.completed
+  };
+};
+
 const TodoController = {
   createTodo: async (req, res) => {
     const user_id = req.sub;
@@ -13,7 +23,7 @@ const TodoController = {
       user_id: user_id
     })
       .then((result) => {
-        return res.status(201).json(result);
+        return res.status(201).json(cleanTodo(result));
       })
       .catch((error) => {
         console.error('ADD TODO: ', error);
@@ -25,7 +35,7 @@ const TodoController = {
     const { Todo } = req.app.locals.models;
     try {
       const todos = await Todo.find({ user_id }).sort({ date: 1 }).select('-user_id');
-      return res.status(200).json(todos);
+      return res.status(200).json(todos.map((todo) => cleanTodo(todo)));
     } catch (error) {
       console.error('GET ALL TODO: ', error);
       return res.status(500).json({ message: 'Erreur lors de la récupération des tâches !' });
@@ -34,20 +44,19 @@ const TodoController = {
   editTodo: async (req, res) => {
     try {
       const { Todo } = req.app.locals.models;
-      const user_id = new mongoose.Types.ObjectId(req.sub);
+      const user_id = req.sub;
       const todo_id = req.params.id;
-      const query = { _id: todo_id, user_id: user_id };
-      const completed = req.body.completed;
+      const { completed, text, date } = req.body;
 
       const todo = await Todo.findOneAndUpdate(
         { _id: todo_id, user_id: user_id },
-        { $set: { completed } },
+        { completed, text, date },
         { returnDocument: 'after' }
       );
 
       if (!todo) return res.status(404).json({ message: 'Not found' });
 
-      return res.json({ todo });
+      return res.json(cleanTodo(todo));
     } catch (error) {
       console.error(error);
       return res.status(500).json({ message: 'Error updating todo' });
@@ -56,7 +65,7 @@ const TodoController = {
 
   deleteTodo: async (req, res) => {
     try {
-      const user_id = new mongoose.Types.ObjectId(req.sub);
+      const user_id = req.sub;
       const todo_id = req.params.id;
       const query = { _id: todo_id, user_id: user_id };
 

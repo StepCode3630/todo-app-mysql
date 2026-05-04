@@ -1,6 +1,5 @@
 export interface Todo {
-  _id: PropertyKey;
-  id: number;
+  id: string;
   date: Date;
   text: string;
   completed: boolean;
