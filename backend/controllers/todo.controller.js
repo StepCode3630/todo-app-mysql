@@ -1,5 +1,3 @@
-// const { use } = require('react');
-const { text } = require('express');
 const mongoose = require('mongoose');
 
 const TodoController = {
@@ -36,12 +34,16 @@ const TodoController = {
   editTodo: async (req, res) => {
     try {
       const { Todo } = req.app.locals.models;
-      const user_id = req.sub;
-      const query = { _id: req.params.id, user_id };
+      const user_id = new mongoose.Types.ObjectId(req.sub);
+      const todo_id = req.params.id;
+      const query = { _id: todo_id, user_id: user_id };
+      const completed = req.body.completed;
 
-      const todo = await Todo.findOneAndUpdate(query, req.body, {
-        new: true
-      });
+      const todo = await Todo.findOneAndUpdate(
+        { _id: todo_id, user_id: user_id },
+        { $set: { completed } },
+        { returnDocument: 'after' }
+      );
 
       if (!todo) return res.status(404).json({ message: 'Not found' });
 
