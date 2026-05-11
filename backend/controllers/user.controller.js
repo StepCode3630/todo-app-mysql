@@ -20,8 +20,10 @@ const UserController = {
       })
       .catch((error) => {
         console.error('ADD USER: ', error);
-        if (error && error.name === 'SequelizeUniqueConstraintError') {
-          return res.status(409).json({ message: 'Un compte avec cet email existe déjà !' });
+        if (error && error.code === 11000) {
+          return res.status(409).json({
+            message: 'Un compte avec cet email existe déjà !'
+          });
         }
         return res.status(500).json({ message: "Erreur lors de l'inscription !" });
       });
