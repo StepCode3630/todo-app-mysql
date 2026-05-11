@@ -16,6 +16,7 @@ const router = require('./routes');
 
 const PORT = process.env.PORT || '3000';
 const ENV = process.env.NODE_ENV || 'development';
+const redisConnect = require('./config/database').connectToRedis;
 
 let app; // singleton Express app
 let server; // http.Server
@@ -61,6 +62,7 @@ async function initApp(options = {}) {
   const theApp = createApp();
 
   await connectToDatabase();
+  await redisConnect();
 
   // Initialize all models & expose to controllers
   theApp.locals.models = {
@@ -83,6 +85,7 @@ async function stopApp() {
     await new Promise((resolve, reject) => server.close((err) => (err ? reject(err) : resolve())));
     server = undefined;
   }
+  await redisConnect.disconnect();
 }
 
 module.exports = { createApp, initApp, stopApp };
