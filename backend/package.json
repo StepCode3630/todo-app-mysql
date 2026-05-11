@@ -23,6 +23,7 @@
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.4.1",
     "mysql2": "^3.11.5",
+    "redis": "^5.12.1",
     "sequelize": "^6.37.8"
   },
   "devDependencies": {
