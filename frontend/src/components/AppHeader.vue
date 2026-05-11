@@ -27,7 +27,7 @@ const logout = () => {
 };
 
 const imgUrlLogo = new URL('../assets/todo.png', import.meta.url).href;
-const imgUrlProfile = new URL('../assets/funny-smile.png', import.meta.url).href;
+const imgUrlProfile = new URL('../assets/loopingImage.jpg', import.meta.url).href;
 </script>
 
 <template>

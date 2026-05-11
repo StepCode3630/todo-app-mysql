@@ -21,7 +21,7 @@ const year = new Date().getFullYear();
         </a>
         <div class="h-4 w-px bg-gray-300 dark:bg-gray-700 space-x-1"></div>
         <a
-          href="https://github.com/matinfo/todo-app-mysql"
+          href="https://github.com/StepCode3630/todo-app-mysql"
           class="text-gray-700 dark:text-gray-400 hover:bg-gray-400 hover:text-white dark:hover:bg-gray-700 rounded-md px-2 py-1 text-sm font-medium"
         >
           <svg
