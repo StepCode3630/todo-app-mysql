@@ -1,29 +1,15 @@
-
 services:
-  mysql:
-    image: mysql:lts
-    container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - db_data:/var/lib/mysql
-
   redis:
     image: redis/redis-stack:7.2.0-v14
     container_name: redis
     ports:
-      - "6379:6379"
-      - "8001:8001"
+      - '6379:6379'
+      - '8001:8001'
     environment:
-      REDIS_ARGS: "--requirepass ${REDIS_PASSWORD} --save 20 1 --loglevel warning"
-    command: ["/entrypoint.sh", "./conf/redis-stack.conf"]
+      REDIS_ARGS: '--requirepass ${REDIS_PASSWORD} --save 20 1 --loglevel warning'
+    command: ['/entrypoint.sh', './conf/redis-stack.conf']
     healthcheck:
-      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      test: ['CMD', 'redis-cli', '-a', '${REDIS_PASSWORD}', 'ping']
     volumes:
       - redis_data:/data
 
@@ -33,18 +19,16 @@ services:
     hostname: mongodb
     restart: always
     ports:
-      - "27017:27017"
+      - '27017:27017'
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
     volumes:
       - mongo_data:/data/db
-      - ./data/mongo:/backupdb
-
+      - ./data/mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
+      - ./data/mongo/backup:/backup
 
 volumes:
-  db_data:
-    driver: local
   redis_data:
     driver: local
   mongo_data:
