@@ -17,6 +17,8 @@ const router = require('./routes');
 const PORT = process.env.PORT || '3000';
 const ENV = process.env.NODE_ENV || 'development';
 
+const { connectRedis } = require('./config/redis');
+
 let app; // singleton Express app
 let server; // http.Server
 
@@ -58,6 +60,8 @@ function createApp() {
  */
 async function initApp(options = {}) {
   const { listen = true, port = PORT } = options;
+
+  await connectRedis();
 
   const theApp = createApp();
 

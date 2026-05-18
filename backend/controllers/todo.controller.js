@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { redisClient } = require('../config/redis');
 
 const cleanTodo = (todo) => {
   const obj = todo.toObject();
@@ -23,6 +24,8 @@ const TodoController = {
         completed: false,
         user_id: user_id
       });
+      //     // Invalider le cache
+      await redisClient.del(`todos:${user_id}`);
     } catch (error) {
       console.error('ADD TODO: ', error);
       return res.status(500).json({ message: "Erreur lors de l'ajout de la tâche !" });
@@ -32,7 +35,20 @@ const TodoController = {
     const user_id = req.sub;
     const { Todo } = req.app.locals.models;
     try {
+      const cacheKey = `todos:${user_id}`;
+      // vérifie le cache
+      const cachedTodos = await redisClient.get(cacheKey);
+      if (cachedTodos) {
+        console.log('Serving from Redis');
+
+        return res.status(200).json(JSON.parse(cachedTodos));
+      }
+
       const todos = await Todo.find({ user_id }).sort({ date: 1 }).select('-user_id');
+
+      await redisClient.set(cacheKey, JSON.stringify(todos), {
+        EX: 60 // time expiration
+      });
       return res.status(200).json(todos.map((todo) => cleanTodo(todo)));
     } catch (error) {
       console.error('GET ALL TODO: ', error);
@@ -54,6 +70,8 @@ const TodoController = {
 
       if (!todo) return res.status(404).json({ message: 'Not found' });
 
+      await redisClient.del(`todos:${todo.user}`);
+
       return res.json(cleanTodo(todo));
     } catch (error) {
       console.error(error);
@@ -74,6 +92,8 @@ const TodoController = {
       if (!deleted) {
         return res.status(404).json({ message: 'Todo not found' });
       }
+
+      await redisClient.del(`todos:${deleted.user}`);
 
       return res.status(200).json({ id: todo_id });
     } catch (error) {
