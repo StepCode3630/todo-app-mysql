@@ -1,23 +1,18 @@
-process.env.NODE_ENV = "test";
-const { sequelize: db } = require("../config/database");
-const { initModels } = require("../models");
+process.env.NODE_ENV = 'test';
+
+const mongoose = require('mongoose');
+const { User, Todo } = require('../models');
 
 beforeAll(async () => {
-  await db.authenticate();
-  global.models = initModels(db);
-  await db.sync({ force: true });
+  const uri = process.env.DB_URL || 'mongodb://127.0.0.1:27017/db_todoapp_test';
+  await mongoose.connect(uri);
+  global.models = { User, Todo };
 });
 
 beforeEach(async () => {
-  // Truncate every model table
-  // Cascade to handle FK constraints
-  await Promise.all(
-    Object.values(global.models)
-      .filter((m) => m && typeof m.destroy === "function")
-      .map((m) => m.destroy({ where: {}, truncate: true, cascade: true }))
-  );
+  await Promise.all([Todo.deleteMany({}), User.deleteMany({})]);
 });
 
 afterAll(async () => {
-  await db.close();
+  await mongoose.connection.close();
 });

@@ -1,11 +1,9 @@
 const router = require('express').Router();
-const { sequelize } = require('../config/database');
+const { User, Todo } = require('../models');
 
-// POST /test/reset – drop & recreate schema
-// Used to reset the database between tests
 router.post('/reset', async (req, res) => {
   try {
-    await sequelize.sync({ force: true });
+    await Promise.all([Todo.deleteMany({}), User.deleteMany({})]);
     return res.status(200).json({ ok: true });
   } catch (err) {
     console.error('TEST RESET failed:', err);
