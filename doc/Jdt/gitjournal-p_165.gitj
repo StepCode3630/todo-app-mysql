@@ -60,6 +60,19 @@
       "duration": 25,
       "status": "DONE",
       "author": "StepCode3630"
+    },
+    {
+      "id": "c37dfbfb-da52-40b3-afee-f4b1f51de779",
+      "type": "commitpatch",
+      "sha": "17688b6c54618e66ae569f56a2ffac0a92f94624",
+      "url": "https://github.com/StepCode3630/todo-app-mysql/commit/17688b6c54618e66ae569f56a2ffac0a92f94624",
+      "name": "fix: remplacement de $search au lieu de $regex",
+      "description": "Difficulté à résoudre même avec l'aide du prof",
+      "date": "2026-05-18T07:34:00.000Z",
+      "duration": 65,
+      "status": "DONE",
+      "author": "StepCode3630",
+      "patch": true
     }
   ]
 }

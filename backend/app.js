@@ -34,6 +34,7 @@ function createApp() {
   // API routes
   app.use(router);
 
+  /// A SUPPRIMER LORS LIVRAISON !!!!!!!
   console.log(listEndpoints(app));
 
   // TEST-ONLY helper: reset DB between specs

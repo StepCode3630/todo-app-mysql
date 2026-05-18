@@ -45,10 +45,10 @@ const UserController = {
 
     if (!user) return res.status(404).json({ message: 'Not found' });
 
-    user.name = req.body.name || user.name;
-    user.address = req.body.address || user.address;
-    user.zip = req.body.zip || user.zip;
-    user.location = req.body.location || user.location;
+    user.name = req.body.name ?? user.name;
+    user.address = req.body.address ?? user.address;
+    user.zip = req.body.zip ?? user.zip;
+    user.location = req.body.location ?? user.location;
 
     await user.save();
 
