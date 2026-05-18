@@ -1,65 +1,41 @@
-# Docker Services
+# Services Docker
 
-To run this application, you need the MySQL service.
+L’application s’appuie sur **MongoDB** (données) et **Redis Stack** (cache applicatif).
 
-As part of this project, you'll need to modify the Node/Express backend to use the MongoDB NoSQL Document database instead of MySQL.
+## Variables d’environnement
 
-You'll also be implementing a frontend page cache using the Redis key-value NoSQL database.
-
-## Environment Variables
-
-All service credentials are configured via the `.env` file at the project root. Docker Compose loads this file automatically.
-
-To get started, copy the example file and adjust values as needed:
+Copiez le fichier d’exemple à la racine :
 
 ```sh
 cp .env.example .env
 ```
 
-## Starting and Stopping Services
+Docker Compose charge automatiquement ce fichier.
 
-To easily install and start these 3 services under Docker on your PC, run the following command:
+## Démarrage / arrêt
 
 ```sh
 docker compose up -d
-```
-
-To stop the services, run the following command:
-
-```sh
 docker compose down
 ```
 
-The 3 services store their respective database data in Docker volumes.
-
-To stop the services and also delete the Docker volumes, run the following command:
+Pour réinitialiser les volumes (dont l’initialisation MongoDB avec `mongo-init.js`) :
 
 ```sh
 docker compose down -v
+docker compose up -d
 ```
 
-## Default Credentials
+## Identifiants par défaut
 
-The default credentials are defined in `.env`. See `.env.example` for the full list of variables.
+| Service | Variable(s) | Valeur par défaut |
+| ------- | ----------- | ----------------- |
+| MongoDB root | `MONGO_ROOT_USERNAME`, `MONGO_ROOT_PASSWORD` | `admin_user` / `admin_pwd` |
+| MongoDB app | `MONGO_APP_BACKEND_*` | `app_backend` / `app_backend_pwd` |
+| MongoDB admin | `MONGO_ADMIN_APP_*` | `admin_app` / `admin_app_pwd` |
+| MongoDB backup | `MONGO_BACKUP_*` | `backup_user` / `backup_user_pwd` |
+| Redis | `REDIS_PASSWORD` | `admin_pwd` |
 
-### MySQL
+Les utilisateurs applicatifs sont créés par `data/mongo/docker-entrypoint-initdb.d/mongo-init.js` au premier démarrage du conteneur `mongo`.
 
-| Variable           | Default        |
-| ------------------ | -------------- |
-| `DB_ROOT_PASSWORD` | `admin_pwd`        |
-| `DB_DATABASE`      | `db_todoapp`   |
-| `DB_USER`          | `app_user`     |
-| `DB_PASSWORD`      | `app_pwd` |
-
-### MongoDB
-
-| Variable              | Default |
-| --------------------- | ------- |
-| `MONGO_ROOT_USERNAME` | `admin_user`  |
-| `MONGO_ROOT_PASSWORD` | `admin_pwd` |
-
-### Redis
-
-| Variable         | Default |
-| ---------------- | ------- |
-| `REDIS_PASSWORD`| `admin_pwd` |
+Voir [README.md](./README.md) pour les permissions détaillées et les commandes de sauvegarde.

@@ -1,46 +1,45 @@
 # Backend — Guide d’utilisation
 
-Ce backend fait partie d’une application **Todo full-stack** utilisant une architecture API REST.
+API REST **Node.js / Express** pour l’application Todo, avec **MongoDB** (Mongoose) et **Redis** (cache).
 
----
-
-## ⚙️ Installation du projet
-
-Place-toi dans le dossier `backend` :
+## Installation
 
 ```sh
 cd backend
+npm install
 ```
 
-Installe les dépendances
-
-```sh
-npm i
-```
-
-## 🔐 Configuration de l’environnement
-
-Avant de lancer le serveur, crée ton fichier .env :
+## Configuration
 
 ```sh
 cp .env.example .env
 ```
 
-Puis configurer les variables nécessaires
+Variables principales :
 
-```sh
-DB_URL="mongodb://user:password@localhost:27017/db_todoapp"
-Port=3000
+| Variable     | Description |
+| ------------ | ----------- |
+| `DB_URL`     | URI MongoDB (`app_backend` sur `db_todoapp`) |
+| `REDIS_URL`  | URI Redis (mot de passe dans l’URL) |
+| `PORT`       | Port HTTP (défaut : 3000) |
+
+Exemple :
+
+```env
+DB_URL=mongodb://app_backend:app_backend_pwd@localhost:27017/db_todoapp?authSource=db_todoapp
+REDIS_URL=redis://:admin_pwd@localhost:6379
 ```
 
-La base de de donnée utilisé est **MongoDB**
+## Lancement
 
-## 🗄️ Base de données
+```sh
+npm run dev
+```
 
-Le projet utilise MongoDB avec Mongoose.
+Démarrez au préalable MongoDB et Redis via `docker compose up -d` à la racine du projet.
 
-Fonctionnalités :
+## Base de données
 
-- stockage des utilisateurs et todos sous forme de documents
-- relations via ObjectId (user_id)
-- requêtes optimisées via Mongoose ODM
+- Modèles : `User`, `Todo` (relation `user_id` → `ObjectId`)
+- Recherche : index texte sur `Todo.text`, requête `$text` dans `GET /api/todo/search`
+- Cache : liste des todos par utilisateur dans Redis (`todos:<userId>`)
