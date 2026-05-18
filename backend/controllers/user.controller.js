@@ -57,6 +57,15 @@ const UserController = {
   },
   deleteCurrentUser: async (req, res) => {
     const { User } = req.app.locals.models;
+    const { Todo } = req.app.locals.models;
+    const user_id = req.sub;
+
+    await Todo.deleteMany({ user_id: user_id }).catch((error) => {
+      console.error('DELETE USER TODOS: ', error);
+      return res
+        .status(500)
+        .json({ message: "Erreur lors de la suppression des taches de l'utilisateur !" });
+    });
 
     await User.findByIdAndDelete(req.sub)
       .then(() => {
