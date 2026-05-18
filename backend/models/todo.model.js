@@ -21,5 +21,6 @@ const todoSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+todoSchema.index({ text: 'text' });
 
 module.exports = mongoose.model('Todo', todoSchema);

@@ -84,27 +84,23 @@ const TodoController = {
     }
   },
   getSearchTodo: async (req, res) => {
-    const user_id = req.sub;
-    const query = req.query.q;
-    const { Todo } = req.app.locals.models;
+    try {
+      const user_id = new mongoose.Types.ObjectId(req.sub);
+      const query = req.query.q;
+      const { Todo } = req.app.locals.models;
 
-    await Todo.find({
-      user_id,
-      text: { $regex: query, $options: 'i' }
-    })
-      .sort({ date: 1 })
-      .select('-user_id')
-      .then((result) => {
-        if (result) {
-          return res.status(200).json(result);
-        } else {
-          return res.status(404);
-        }
-      })
-      .catch((error) => {
-        console.error('SEARCH TODO: ', error);
-        return res.status(500);
-      });
+      const todos = await Todo.find({ user_id, $text: { $search: query } })
+        .sort({ date: 1 })
+        .select('-user_id');
+
+      console.log('SEARCH TODO: ', todos);
+
+      return res.status(200).json(todos.map((todo) => cleanTodo(todo)));
+    } catch (error) {
+      console.error('SEARCH TODO: ', error);
+
+      return res.status(500).json({ message: 'Erreur lors de la recherche des tâches !' });
+    }
   }
 };
 
